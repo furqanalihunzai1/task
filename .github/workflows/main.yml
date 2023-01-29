@@ -1,9 +1,9 @@
-name: Merge dev to prod
+name: Merge DEV to PROD
 
 on:
   push:
     branches:
-      - dev
+      - DEV
 
 jobs:
   merge:
@@ -13,13 +13,13 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
 
-    - name: Merge dev to prod
+    - name: Merge DEV to PROD
       run: |
-        git checkout prod
-        git merge dev
+        git checkout PROD
+        git merge DEV
 
     - name: Push changes
       uses: ad-m/github-push-action@v1
       with:
-        branch: prod
+        branch: PROD
         force: true
