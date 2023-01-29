@@ -1,25 +1,23 @@
-name: Merge DEV to PROD
-
-on:
-  push:
-    branches:
-      - DEV
-
+name: PRs to master
+on: 
+  pull_request:
+    branches: DEV
+    types: [closed]
 jobs:
-  merge:
-    runs-on: ubuntu-22.04.1 LTS
-
+  merge-master-back-to-dev:
+    if: github.event.pull_request.merged == true
+    timeout-minutes: 2
+    runs-on: ubuntu-latest
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
-
-    - name: Merge DEV to PROD
+    - uses: actions/checkout@v2
+    - name: Set Git config
       run: |
-        git checkout PROD
-        git merge DEV
-
-    - name: Push changes
-      uses: ad-m/github-push-action@v1
-      with:
-        branch: PROD
-        force: true
+          git config --local user.email "baighakeemyar.cloudlem@gmail.com"
+          git config --local user.name "HakeemYB"
+    - name: Merge DEV back to PROD
+      run: |
+          git fetch --unshallow
+          git checkout PROD
+          git pull
+          git merge --no-ff DEV -m "Auto-merge DEV back to PROD"
+          git push
