@@ -1,4 +1,4 @@
-name: Merge Code to PROD
+name: Auto Merge DEV to PROD
 
 on:
   push:
@@ -13,8 +13,37 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
 
-    - name: Merge to PROD
-      run: |
-        git checkout PROD
-        git merge DEV
-        git push origin PROD
+    - name: Merge DEV to PROD
+      uses: actions/github-script@0.9.0
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        script: |
+          const octokit = require('@octokit/rest')();
+          octokit.authenticate({
+            type: 'token',
+            token: process.env.GITHUB_TOKEN
+          });
+
+          async function run() {
+            const { data: pullRequest } = await octokit.pulls.create({
+              owner: process.env.GITHUB_REPOSITORY.split('/')[0],
+              repo: process.env.GITHUB_REPOSITORY.split('/')[1],
+              head: 'DEV',
+              base: 'PROD',
+              title: 'Merge DEV into PROD',
+              body: 'This is an automated merge of DEV into PROD.',
+            });
+          
+            await octokit.pulls.merge({
+              owner: process.env.GITHUB_REPOSITORY.split('/')[0],
+              repo: process.env.GITHUB_REPOSITORY.split('/')[1],
+              pull_number: pullRequest.number,
+            });
+          }
+          
+          run();
+
+
+
+
