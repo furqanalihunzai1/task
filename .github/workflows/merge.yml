@@ -1,31 +1,43 @@
-name: Create Pull Request
+name: Deploy to PROD
 
 on:
+  workflow_dispatch:
   push:
-    branches:
-      - DEV
+    branches: [ DEV ]
+
+# env:
+#   GITHUB_TOKEN: ${{ secrets.TOKEN }}
 
 jobs:
-  merge:
+  deploy:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout source branch
+    - name: Checkout code
       uses: actions/checkout@v2
-      with:
-        ref: DEV
-        repository: HakeemYB/task
-        token: ${{ secrets.GITHUB_TOKEN }}
 
-    - name: Create Pull Request
-      run: |
-        curl -X POST \
-        -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
-        -H "Content-Type: application/json" \
-        -d '{
-              "title": "Merge source_branch into target_branch",
-              "head": "DEV",
-              "base": "PROD",
-              "body": "This pull request merges DEV into PROD."
-            }' \
-        https://api.github.com/repos/HakeemYB/task/pulls
+#     - name: Set up Git credentials
+#       run: |
+#         git config --global user.email "github-actions[bot]@users.noreply.github.com"
+#         git config --global user.name "github-actions[bot]"
+#         echo "https://${GITHUB_ACTOR}:${GITHUB_TOKEN}@github.com" > ~/.git-credentials
+#         git config credential.helper store
+        
+    
+    - name: Merge DEV -> PROD
+      uses: devmasx/merge-branch@master
+      with:
+        type: now
+        from_branch: DEV
+        target_branch: PROD
+        github_token: ${{ secrets.GIT_TOKEN }}
+    
+
+#     - name: Merge DEV into PROD
+#       run: |
+#         git checkout PROD
+#         git merge DEV
+
+#     - name: Push changes to PROD
+#       run: |
+#         git push https://${GITHUB_ACTOR}:${GITHUB_TOKEN}@github.com/HakeemYB/task.git HEAD:PROD
