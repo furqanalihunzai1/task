@@ -16,4 +16,4 @@ jobs:
         git merge origin/DEV --no-ff
     - name: Push to PROD Branch
       run: |
-        git push origin HEAD:PROD
+        git push -u origin PROD
