@@ -2,17 +2,13 @@ pipeline {
     agent any
  
     stages {
-         stage('Clone') {
-            steps {
-                git clone 'https://github.com/HakeemYB/task.git'
-            }
-        }
+         
         stage('Build') {
             steps {
                 
                 
                 // Build the Dockerfile
-                sh 'docker build --tag=beyghakymyar/frontend:$BUILD_NUMBER /my-app/Dockerfile'
+                sh 'docker build --tag=beyghakymyar/frontend:$BUILD_NUMBER /my-app'
                 sh 'docker build --tag=beyghakymyar/backend:$BUILD_NUMBER .'
             }
         }
