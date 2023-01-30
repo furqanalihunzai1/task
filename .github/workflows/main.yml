@@ -12,6 +12,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
       - name: Merge Code
-        run: git merge origin/DEV
+        run: git checkout origin/PROD
+        run: git merge origin/PROD
       - name: Push
         run: git push origin PROD
