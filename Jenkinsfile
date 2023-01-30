@@ -9,7 +9,7 @@ pipeline {
                 
                 // Build the Dockerfile
                 
-                sh 'docker build --tag=beyghakymyar/backend:$BUILD_NUMBER .'
+                sh 'docker build --tag=beyghakymyar/backend:1.0.$BUILD_NUMBER .'
             }
         }
         
@@ -17,11 +17,11 @@ pipeline {
             steps {
                 // Tag latest image
                 
-                sh 'docker tag beyghakymyar/backend:$BUILD_NUMBER beyghakymyar/backend:latest'
+                sh 'docker tag beyghakymyar/backend:$BUILD_NUMBER beyghakymyar/backend:1.0.$BUILD_NUMBER'
                 
                 // Tag Image with "latest"
                 
-                sh 'docker tag beyghakymyar/backend:$BUILD_NUMBER beyghakymyar/backend:$GIT_COMMIT'
+                sh 'docker tag beyghakymyar/backend:1.0.$BUILD_NUMBER beyghakymyar/backend:$GIT_COMMIT'
             }
         }
         
@@ -30,11 +30,11 @@ pipeline {
                 sh'docker login -u beyghakymyar -p yaaraan@123'
                 // Push Image to DockerHub
                
-                sh 'docker push beyghakymyar/backend:$BUILD_NUMBER'
+                //sh 'docker push beyghakymyar/backend:$BUILD_NUMBER'
                 
                 // Push Tag to DockerHub
                 
-                sh 'docker push beyghakymyar/backend:latest'
+                sh 'docker push beyghakymyar/backend:1.0.$BUILD_NUMBER'
             }
         }
         
