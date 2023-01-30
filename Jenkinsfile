@@ -4,8 +4,7 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                // Checkout the code from GitHub
-                git url: 'https://github.com/HakeemYB/task.git'
+                
                 
                 // Build the Dockerfile
                 sh 'docker build --tag=beyghakymyar/frontend:$BUILD_NUMBER /my-app/Dockerfile'
