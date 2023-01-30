@@ -20,6 +20,6 @@ jobs:
 
     - name: Merge code to PROD
       run: |
-        git checkout origin/PROD
+        git checkout -b origin/PROD
         git merge DEV
         git push origin PROD
