@@ -3,6 +3,7 @@ version: '3.7'
 services:
   frontend:
     container_name: frontend
+    image: beyghakymyar/frontend
     build:
       context: ./my-app
       dockerfile: Dockerfile
@@ -16,6 +17,7 @@ services:
   
   backend:
     container_name: backend
+    image: beyghakymyar/frontend
     build:
       context: ./
       dockerfile: Dockerfile
