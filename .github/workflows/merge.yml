@@ -15,5 +15,5 @@ jobs:
 
     - name: Merge code to PROD
       run: |
-        git checkout PROD
+        git checkout remote/origin:PROD
         git merge DEV
