@@ -1,4 +1,4 @@
-name: Merge code to PROD
+name: Merge Code to Prod
 
 on:
   push:
@@ -6,12 +6,14 @@ on:
       - DEV
 
 jobs:
-  merge_code:
+  merge_to_prod:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-      - name: Merge PROD
-        run: git merge origin/PROD
-      - name: Push changes
-        run: git push origin DEV
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Merge code to PROD
+      run: |
+        git checkout PROD
+        git merge DEV
