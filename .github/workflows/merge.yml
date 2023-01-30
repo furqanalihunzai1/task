@@ -1,25 +1,16 @@
-name: Merge Code to Prod
+name: Main workflow
 
 on:
   push:
-    branches:
-      - DEV
+    branches: DEV
 
 jobs:
-  merge_to_prod:
+  merge-master-to-develop:
+    name: Merge master -> develop
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
-
-    - name: Set up Git
-      run: |
-        git config --global user.email "baighakeemyar.cloudlem@gmail.com"
-        git config --global user.name "HakeemYB"
-
-    - name: Merge code to PROD
-      run: |
-        git checkout -b origin/PROD
-        git merge DEV
-        git push origin PROD
+        uses: HakeemYB/direct-merge-action@master
+        with:
+          source-branch: DEV
+          target-branch: PROD
