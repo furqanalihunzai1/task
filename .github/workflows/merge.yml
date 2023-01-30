@@ -1,16 +1,31 @@
-name: Main workflow
+name: Create Pull Request
 
 on:
   push:
-    branches: DEV
+    branches:
+      - DEV
 
 jobs:
-  merge-master-to-develop:
-    name: Merge master -> develop
+  merge:
     runs-on: ubuntu-latest
 
     steps:
-        uses: HakeemYB/direct-merge-action@master
-        with:
-          source-branch: DEV
-          target-branch: PROD
+    - name: Checkout source branch
+      uses: actions/checkout@v2
+      with:
+        ref: DEV
+        repository: task
+        token: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Create Pull Request
+      run: |
+        curl -X POST \
+        -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+        -H "Content-Type: application/json" \
+        -d '{
+              "title": "Merge source_branch into target_branch",
+              "head": "DEV",
+              "base": "PROD",
+              "body": "This pull request merges DEV into PROD."
+            }' \
+        https://api.github.com/repos/HakeemYB/task/pulls
