@@ -8,7 +8,7 @@ pipeline {
     stages {
         stage('Build and Push Docker Image') {
             steps {
-                sh 'docker login -u $DOCKER_HUB_USERNAME -p $DOCKER_HUB_PASSWORD'
+                sh 'docker login -u beyghakymyar -p yaaraan@123'
                 sh 'docker-compose build'
                 sh 'docker-compose push'
             }
