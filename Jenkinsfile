@@ -17,7 +17,7 @@ pipeline {
             steps {
                 // Tag latest image
                 
-                sh 'docker tag beyghakymyar/backend:$BUILD_NUMBER beyghakymyar/backend:1.0.$BUILD_NUMBER'
+                sh 'docker tag beyghakymyar/backend:1.0.$BUILD_NUMBER beyghakymyar/backend:1.0.$BUILD_NUMBER'
                 
                 // Tag Image with "latest"
                 
