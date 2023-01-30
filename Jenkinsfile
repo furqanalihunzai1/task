@@ -1,42 +1,17 @@
 pipeline {
-    agent any
- 
+    agent {
+        docker {
+            image 'docker:stable-dind'
+            args '-v /var/run/docker.sock:/var/run/docker.sock'
+        }
+    }
     stages {
-         
-        stage('Build') {
+        stage('Build and Push Docker Image') {
             steps {
-                
-                
-                // Build the Dockerfile
-                
-                sh 'docker build --tag=beyghakymyar/backend:1.0.$BUILD_NUMBER .'
+                sh 'docker login -u $DOCKER_HUB_USERNAME -p $DOCKER_HUB_PASSWORD'
+                sh 'docker-compose build'
+                sh 'docker-compose push'
             }
         }
-        
-        stage('Tag') {
-            steps {
-                // Tag latest image
-                
-                sh 'docker tag beyghakymyar/backend:1.0.$BUILD_NUMBER beyghakymyar/backend:1.0.$BUILD_NUMBER'
-                
-                // Tag Image with "latest"
-                
-                sh 'docker tag beyghakymyar/backend:1.0.$BUILD_NUMBER beyghakymyar/backend:$GIT_COMMIT'
-            }
-        }
-        
-        stage('Push') {
-            steps {
-                sh'docker login -u beyghakymyar -p yaaraan@123'
-                // Push Image to DockerHub
-               
-                //sh 'docker push beyghakymyar/backend:$BUILD_NUMBER'
-                
-                // Push Tag to DockerHub
-                
-                sh 'docker push beyghakymyar/backend:1.0.$BUILD_NUMBER'
-            }
-        }
-        
     }
 }
