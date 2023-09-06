@@ -14,3 +14,15 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
 
+
+
+    
+    - name: Merge DEV -> PROD
+      uses: devmasx/merge-branch@master
+      with:
+        type: now
+        from_branch: DEV
+        target_branch: PROD
+        github_token: ${{ secrets.GIT_TOKEN }}
+    
+
